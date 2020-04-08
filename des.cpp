@@ -1,5 +1,5 @@
-/*-----------Алгоритм шифрования DES-------------*/
-/*--------Выполнил студент ДнУ, гр. ПА-18у-1, Инкин А А ----------*/
+/*-----------Encryption algorithm DES-------------*/
+/*--------Is done by a student Inkin A ----------*/
 
 
 #include <iostream>
@@ -46,7 +46,7 @@ int PC_2[] = { 14, 17, 11, 24,  1,  5,
 			  41, 52, 31, 37, 47, 55,
 			  30, 40, 51, 45, 33, 48,
 			  44, 49, 39, 56, 34, 53,
-			  46, 42, 50, 36, 29, 32 }; // для сжатия
+			  46, 42, 50, 36, 29, 32 }; // for compression
 
 int EXPANSION[] = { 32,  1,  2,  3,  4,  5,
 			4,  5,  6,  7,  8,  9,
@@ -117,9 +117,9 @@ int S_BOX[8][4][16] = {
 	}
 };
 
-int shiftBits[] = { 1, 1, 2, 2, 1, 1, 1, 2, 2, 1, 2, 1, 2, 1, 2, 1 }; // уникальный набор для сдвига ключа в зависимости от раунда
+int shiftBits[] = { 1, 1, 2, 2, 1, 1, 1, 2, 2, 1, 2, 1, 2, 1, 2, 1 }; // unique set for shifting the key depending on the round
 
-bitset<64> charToBitset(const char s[8]) // перевод текста в битовый набор
+bitset<64> charToBitset(const char s[8]) // bitmap translation
 {
 	bitset<64> bits;
 	for (int i = 0; i < 8; ++i)
@@ -128,7 +128,7 @@ bitset<64> charToBitset(const char s[8]) // перевод текста в битовый набор
 	return bits;
 }
 
-bitset<28> leftShift(bitset<28> k, int shift) // сдвиг влево
+bitset<28> leftShift(bitset<28> k, int shift) // left shift
 {
 	bitset<28> tmp = k;
 	for (int i = 27; i >= 0; --i)
@@ -141,7 +141,7 @@ bitset<28> leftShift(bitset<28> k, int shift) // сдвиг влево
 	return k;
 }
 
-void generateKeys() //генерация ключа
+void generateKeys() //РіРµРЅРµСЂР°С†РёСЏ РєР»СЋС‡Р°
 {
 	bitset<56> realKey;
 	bitset<28> left, right;
@@ -152,7 +152,7 @@ void generateKeys() //генерация ключа
 		//printf_s("%d", (int)realKey[55 - i]);
 	}
 	//cout << endl;
-	for (int round = 0; round < 16; ++round) // делим ключ на 28 б и выполняем сдвиг
+	for (int round = 0; round < 16; ++round) // divide the key by 28 b and perform a shift
 	{
 		for (int i = 28; i < 56; ++i)
 			left[i - 28] = realKey[i];
@@ -197,7 +197,7 @@ bitset<32> expander(bitset<32> right, bitset<48> k)
 	return out;
 }
 
-bitset<64> encrypt(bitset<64>& itext) //шифруем
+bitset<64> encrypt(bitset<64>& itext) //encrypt
 {
 	bitset<64> currBits;
 	bitset<32> left;
@@ -212,8 +212,8 @@ bitset<64> encrypt(bitset<64>& itext) //шифруем
 	for (int round = 0; round < 16; ++round)
 	{
 		nleft = right;
-		right = left ^ expander(right ,skey[round]);	 //	перестановка с расширением
-		left = nleft;					// ^ - Побитовое исключающее ИЛИ
+		right = left ^ expander(right ,skey[round]);	 //	permutation with extension
+		left = nleft;					// ^ - Bitwise exclusive OR
 	}
 	for (int i = 0; i < 32; ++i)
 		currBits[i] = left[i];
