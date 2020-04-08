@@ -1,3 +1,7 @@
+/*-----------Encryption algorithm RSA-------------*/
+/*--------Is done by a student Inkin A ----------*/
+
+
 #include <iostream>
 #include <math.h>
 #include <time.h>
